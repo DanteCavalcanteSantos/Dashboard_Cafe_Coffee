@@ -14,3 +14,5 @@ The project aims to analyze data on Brazilian coffee exports and the freight cos
 The project also included Power Query data modeling exercises during training.
 
 ## Técnicas aplicadas no Projeto.
+
+1 Página - Blocos Econômicos
