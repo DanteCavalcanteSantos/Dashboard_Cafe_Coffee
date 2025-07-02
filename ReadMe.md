@@ -16,3 +16,10 @@ The project also included Power Query data modeling exercises during training.
 ## Técnicas aplicadas no Projeto.
 
 1 Página - Blocos Econômicos
+
+2 Página - Tipos de Café
+
+1 Page - Economic Blocks
+
+2 Page - Types of Coffee
+
