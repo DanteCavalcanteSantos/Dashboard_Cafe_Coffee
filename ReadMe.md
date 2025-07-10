@@ -41,3 +41,41 @@ Alguns vídeos que auxiliaram na modelagem de dados.
 
 ### 2 - Modelagem de dados | Modeling Data
 
+Na coleta dos dados dos links informados acimas, foram realizadas a conversão de PDF para Excel e posteriormente no Power Query ajustadas.
+
+Tabelas carregadas:
+
+- Relatorio_Mensal Geral
+- Relatorio_Mensal 2024
+- Valor_FOB
+- Exportacoes Continentes Grupos e Blocos - 2023
+- Exportacoes Continentes Grupos e Blocos - 2024
+
+
+- Relatorio_Mensal Geral
+  *O que foi feito:*
+  
+  Alterado o tipo dos dados
+  Removido as linahs com dados faltantes.
+  Efetuada a consulta acrescentada 
+ 
+- Relatorio_Mensal 2024; Valor_FOB
+  *O que foi feito:*
+  
+  Alterado o tipo dos dados
+  Renomeada as colunas
+
+- Exportacoes Continentes Grupos e Blocos - 2023; Exportacoes Continentes Grupos e Blocos - 2024
+  *O que foi feito:*
+
+  Ajustado a Data
+  Alterado o tipo dos dados
+  Colunas vazias removidas
+
+
+
+
+
+
+
+
