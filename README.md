@@ -4,10 +4,6 @@ Análise das exportações brasileiras de café com dados públicos do Cecafé e
 cobrindo 2023 e 2024: volume por bloco econômico, receita cambial, mix por tipo de grão e
 concentração portuária.
 
-<!-- Exporte as páginas do Power BI para img/dashboard.png e descomente:
-![Dashboard do Café](img/dashboard.png)
--->
-
 ## Problema
 
 O café é uma das principais commodities de exportação do país, mas o dado público chega
@@ -31,8 +27,9 @@ Fontes públicas, sem dado proprietário:
 | [Cecafé — IPEP Arábica](https://www.cecafe.com.br/indicadores-de-mercado/ipep-arabica/) | indicador de preço do arábica |
 | [IBGE — Levantamento Sistemático da Produção Agrícola](https://www.ibge.gov.br/estatisticas/economicas/agricultura-e-pecuaria/9201-levantamento-sistematico-da-producao-agricola.html) | área, produção e rendimento médio da safra |
 
-Período: 2022 a 2024. Boa parte veio em PDF e foi convertida para Excel antes da modelagem —
-sem necessidade de código, o gargalo estava na estrutura, não no volume.
+Período: 2022 a 2024, com série mensal em 2023 e 2024 — 50.443.037 sacas de 60 kg exportadas
+em 2024. Boa parte veio em PDF e foi convertida para Excel antes da modelagem: sem
+necessidade de código, o gargalo estava na estrutura, não no volume.
 
 **Tabelas carregadas**
 
@@ -72,7 +69,15 @@ Cartão de controle de atualização, para o leitor saber a idade do dado:
 Cartao_Atualizacao = "Atualização em " & SELECTEDVALUE('Atualização'[Data e Hora])
 ```
 
-Análise temporal comparando ano contra ano e mês contra mês, além de acumulado até a data.
+**Análise temporal em duas frentes**, calculada para cada um dos quatro tipos de grão:
+
+- **YoY** — `YoY Receita Arabica Total (%)` e equivalentes para conillon, solúvel e torrado:
+  mesmo mês contra o ano anterior, o que remove o efeito da sazonalidade da safra.
+- **MoM** — `MoM Receita Conillon Total (%)` e equivalentes: mês contra mês, para movimento
+  recente.
+
+Cada indicador tem sua medida de detalhe (`Detalhe % YoY Arabica`, `Detalhe % MoM Torrado`)
+usada nos visuais de drill.
 
 **Duas páginas de relatório**
 
@@ -83,21 +88,45 @@ Análise temporal comparando ano contra ano e mês contra mês, além de acumula
 
 **A Europa é mais da metade do destino, e cresceu.** Em 2024 o bloco europeu importou
 26.528.972 sacas de 60 kg, gerando US$ 6.621,8 milhões FOB — 52,6% do total, com alta de
-40,6% na comparação com o mesmo período do ciclo anterior. A América do Norte veio em
-seguida, com 10.680.799 sacas e US$ 2.650,1 milhões (21,2%), crescendo 46,2%.
+40,6% em volume sobre 2023. A América do Norte veio em seguida, com 10.680.799 sacas e
+US$ 2.650,1 milhões (21,2%), crescendo 46,2%. Somados, os países importadores concentram
+91,8% do total.
 
-**O crescimento foi de preço, não só de volume.** Em 2023 a Europa respondia por 18.862.114
-sacas e US$ 3.919,3 milhões. De 2023 para 2024 o volume subiu cerca de 41%, enquanto a
-receita cambial subiu 69%. A diferença entre as duas taxas é preço por saca — o Brasil
-vendeu mais caro, não apenas mais.
+**O crescimento foi de preço, não só de volume.** No consolidado, o volume subiu 28,5% de
+2023 para 2024 (39,2 → 50,4 milhões de sacas), enquanto a receita cambial subiu 55,4%
+(US$ 8,05 → 12,51 bilhões FOB). A receita por saca aumentou cerca de 21%: o Brasil vendeu
+mais caro, não apenas mais. Na Europa isolada o efeito é ainda mais forte — 41% de volume
+contra 69% de receita.
 
 **Três países puxam a demanda.** No acumulado de 2024: Estados Unidos com 8.138.164 sacas,
 Alemanha com 7.592.061 e Bélgica com 4.380.132.
+
+**O crescimento está na borda, não no centro.** O Leste Europeu foi o bloco que mais avançou
+em volume (+74,7%), enquanto América Central (−48,5%), América do Sul (−32,7%) e Mercosul
+(−18,4%) recuaram. Mercados emergentes somam 19,9% de participação contra 71,9% dos
+tradicionais.
+
+**Arábica sustenta o resultado.** Em 2023 o arábica representou 78,6% do volume exportado e
+82,2% da receita — a distância entre os dois percentuais mostra que é também o grão de maior
+valor por saca.
 
 **A logística tem um ponto único de concentração.** Santos/SP escoou 60,0% do volume de
 despacho e 68,0% do volume de embarque em 2024 (contra 61,9% e 71,7% em 2023). Rio de
 Janeiro aparece com 16,5% de despacho. A dependência caiu de um ano para o outro, mas
 qualquer interrupção em Santos ainda atinge a maior parte da exportação.
+
+> Conferência: as bases independentes — série por tipo de grão, série por bloco econômico e
+> tabela de despacho por porto — fecham no mesmo total de 2024 (50.443.037 sacas) e de 2023
+> (39.245.773 sacas, US$ 8.051,1 milhões). Os números acima saem direto de
+> `Dados/Banco de dados/`.
+
+## Observação sobre a base de origem
+
+No arquivo de exportações por bloco econômico, a última coluna vem rotulada como *"Variação
+(%) em comparação ao mesmo período de 2020"*, mas os valores correspondem à variação de
+volume contra **2023**, não contra 2020 — conferido linha a linha (Europa +40,6%, América do
+Norte +46,2%, Ásia +11,4%). O rótulo veio assim do Cecafé. Ao atualizar a base, vale
+reconferir.
 
 ## Stack
 
@@ -114,6 +143,10 @@ git clone https://github.com/DanteCavalcanteSantos/Dashboard_Cafe_Coffee.git
 
 Abra `Dashboard Café Brasileiro.pbix` no Power BI Desktop e atualize as fontes apontando
 para a pasta `Dados/` local.
+
+Para atualizar com dados novos, baixe a publicação mensal do Cecafé, converta o PDF para
+Excel e mantenha o mesmo layout de colunas — as etapas do Power Query estão nomeadas por
+tabela.
 
 ## Estrutura
 
@@ -142,8 +175,9 @@ Analysis of Brazilian coffee exports using public Cecafé and IBGE data for 2023
 volume by economic bloc, foreign exchange revenue, mix by bean type and port concentration.
 
 Key findings: Europe took 26,528,972 60kg bags in 2024 (52.6% of the total, US$ 6,621.8M
-FOB, up 40.6%), while revenue grew faster than volume — 69% against 41% — meaning Brazil
-sold at a better price, not just in larger quantity. Santos/SP handled 60.0% of dispatch
-volume, a single logistical concentration point.
+FOB, up 40.6%). Overall volume grew 28.5% while revenue grew 55.4%, meaning revenue per bag
+rose roughly 21% — Brazil sold at a better price, not just in larger quantity. Arabica
+accounted for 78.6% of volume and 82.2% of revenue. Santos/SP handled 60.0% of dispatch
+volume and 68.0% of shipping volume, a single logistical concentration point.
 
 Stack: Power BI, Power Query, DAX, Excel.
